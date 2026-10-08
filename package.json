@@ -1,0 +1,26 @@
+{
+  "name": "online-learning-platform",
+  "version": "1.0.0",
+  "description": "Online Learning Platform with a Modern User Interface",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "node db/setup.js",
+    "dev": "node --watch server.js",
+    "setup:sqlite": "cross-env DB_DRIVER=sqlite node --experimental-sqlite db/setup.js",
+    "start:sqlite": "cross-env DB_DRIVER=sqlite node --experimental-sqlite server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
+  }
+}

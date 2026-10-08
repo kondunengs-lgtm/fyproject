@@ -1,0 +1,30 @@
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="/">
+      <span class="brand-mark">L</span>
+      LearnWell
+    </a>
+    <nav class="nav">
+      <a href="/courses">Courses</a>
+      <% if (currentUser) { %>
+        <% if (currentUser.role === 'instructor') { %>
+          <a href="/instructor/courses">My courses</a>
+        <% } else { %>
+          <a href="/dashboard">My learning</a>
+        <% } %>
+        <form method="post" action="/signout" style="margin:0">
+          <button class="btn btn-ghost btn-sm" type="submit">Sign out</button>
+        </form>
+      <% } else { %>
+        <a href="/signin">Sign in</a>
+        <a class="btn btn-sm" href="/register">Get started</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="container">
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %>" style="margin-top:16px"><%= flash.message %></div>
+    <% } %>
+  </div>

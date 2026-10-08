@@ -1,0 +1,40 @@
+<%
+/* The persistent course map (FR-08). Visible beside the content on desktop,
+   collapsed into a drawer on a phone. */
+var currentLessonId = typeof currentLessonId !== 'undefined' ? currentLessonId : null;
+var sidebarLocked = typeof sidebarLocked !== 'undefined' ? sidebarLocked : false;
+%>
+<aside class="sidebar drawer" id="courseMap">
+  <div class="sidebar-head">
+    <div class="title">Course content</div>
+    <p class="muted" style="margin:4px 0 0">
+      <%= modules.length %> module<%= modules.length === 1 ? '' : 's' %>
+      &middot;
+      <% var lessonTotal = modules.reduce(function (n, m) { return n + m.lessons.length; }, 0); %>
+      <%= lessonTotal %> lesson<%= lessonTotal === 1 ? '' : 's' %>
+    </p>
+  </div>
+
+  <% modules.forEach(function (mod) { %>
+    <div class="module">
+      <div class="module-head">
+        <span><%= mod.position %>. <%= mod.title %></span>
+        <span class="module-count"><%= mod.completed_count %>/<%= mod.lessons.length %></span>
+      </div>
+      <% mod.lessons.forEach(function (lesson) { %>
+        <% if (sidebarLocked) { %>
+          <span class="lesson-link" style="cursor:default">
+            <span class="tick <%= lesson.completed ? 'done' : '' %>">&#10003;</span>
+            <span><%= lesson.title %></span>
+          </span>
+        <% } else { %>
+          <a class="lesson-link <%= currentLessonId === lesson.lesson_id ? 'current' : '' %>"
+             href="/lessons/<%= lesson.lesson_id %>">
+            <span class="tick <%= lesson.completed ? 'done' : '' %>">&#10003;</span>
+            <span><%= lesson.title %></span>
+          </a>
+        <% } %>
+      <% }); %>
+    </div>
+  <% }); %>
+</aside>

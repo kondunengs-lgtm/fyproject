@@ -1,0 +1,99 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <p class="muted" style="margin-bottom:8px">
+      <a href="/courses/<%= course.course_id %>"><%= course.title %></a> / <%= lesson.module_title %>
+    </p>
+
+    <div class="split">
+      <%- include('partials/sidebar', { modules: modules, currentLessonId: lesson.lesson_id, sidebarLocked: false }) %>
+
+      <div>
+        <div class="player-shell">
+          <video id="player" preload="metadata" playsinline
+                 poster="" aria-label="<%= lesson.title %>">
+            <source src="<%= lesson.video_url %>" type="video/mp4">
+            Your browser cannot play this video.
+          </video>
+
+          <!-- Custom control bar (FR-09): one row, same position on every lesson -->
+          <div class="controls">
+            <div class="scrub" id="scrub" role="slider" tabindex="0"
+                 aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="played" id="played"></div>
+              <div class="knob" id="knob"></div>
+            </div>
+            <div class="control-row">
+              <button class="ctl" id="playBtn" type="button" aria-label="Play">&#9654;</button>
+              <button class="ctl" id="back10" type="button" aria-label="Back 10 seconds">&#8630; 10s</button>
+              <button class="ctl" id="fwd10" type="button" aria-label="Forward 10 seconds">10s &#8631;</button>
+              <button class="ctl" id="muteBtn" type="button" aria-label="Mute">&#128266;</button>
+              <input class="volume" id="volume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+              <select class="speed-select" id="speed" aria-label="Playback speed">
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+              </select>
+              <button class="ctl" id="fsBtn" type="button" aria-label="Full screen">&#9974;</button>
+              <span class="ctl-time" id="time">0:00 / 0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h1><%= lesson.title %></h1>
+          <p class="muted">
+            Module <%= lesson.module_position %>: <%= lesson.module_title %>
+            &middot; <span id="moduleCount"><%= moduleCompleted %></span>/<%= moduleTotal %> lessons in this module finished
+          </p>
+
+          <div class="progress-line">
+            <span>Course progress</span>
+            <span id="percentLabel"><%= coursePercent %>%</span>
+          </div>
+          <div class="bar"><span id="courseBar" style="width:<%= coursePercent %>%"></span></div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap">
+            <button class="btn <%= isCompleted ? 'btn-ghost' : '' %>" id="completeBtn" type="button"
+                    data-completed="<%= isCompleted ? '1' : '0' %>">
+              <%= isCompleted ? 'Completed' : 'Mark as complete' %>
+            </button>
+            <span class="muted" id="saveState" aria-live="polite"></span>
+          </div>
+
+          <div class="lesson-nav">
+            <% if (previous) { %>
+              <a class="btn btn-ghost btn-sm" href="/lessons/<%= previous.lesson_id %>">&larr; Previous lesson</a>
+            <% } %>
+            <% if (next) { %>
+              <a class="btn btn-sm" href="/lessons/<%= next.lesson_id %>">Next lesson &rarr;</a>
+            <% } else { %>
+              <a class="btn btn-ghost btn-sm" href="/courses/<%= course.course_id %>">Back to course</a>
+            <% } %>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost btn-block drawer-toggle" type="button"
+                style="margin-top:16px" onclick="document.getElementById('courseMap').classList.toggle('open')">
+          Show or hide course content
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  window.LESSON = {
+    id: <%= lesson.lesson_id %>,
+    resumeAt: <%= resumeAt %>,
+    duration: <%= lesson.duration_seconds %>,
+    completed: <%= isCompleted ? 'true' : 'false' %>
+  };
+</script>
+<script src="/js/player.js"></script>
+
+<%- include('partials/footer') %>

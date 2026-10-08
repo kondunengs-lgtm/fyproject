@@ -1,0 +1,43 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="container">
+    <h1>Learn without fighting the interface.</h1>
+    <p class="lead">
+      Courses organised into modules and lessons, a video player built for how students
+      actually review, and progress you can see at a glance. Free to use, light on data,
+      and designed for the phone in your hand.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="/courses">Browse courses</a>
+      <% if (!currentUser) { %><a class="btn btn-ghost" href="/register">Create a free account</a><% } %>
+    </div>
+    <div class="pill-row">
+      <span class="pill">Structured course map</span>
+      <span class="pill">Resume where you stopped</span>
+      <span class="pill">Progress percentages</span>
+      <span class="pill">Works on a small screen</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Latest courses</h2>
+        <p class="muted">Enrol and start straight away.</p>
+      </div>
+      <a href="/courses">See all</a>
+    </div>
+
+    <div class="grid">
+      <% courses.forEach(function (course) { %>
+        <%- include('partials/course-card', { course: course, enrolled: null }) %>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

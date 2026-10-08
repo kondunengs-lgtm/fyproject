@@ -1,0 +1,22 @@
+<article class="course-card">
+  <% if (course.thumbnail_url) { %>
+    <img class="thumb" src="<%= course.thumbnail_url %>" alt="Cover image for <%= course.title %>" style="object-fit:cover">
+  <% } else { %>
+    <div class="thumb"><%= course.title %></div>
+  <% } %>
+  <div class="body">
+    <div class="card-meta">
+      <span class="tag"><%= course.category %></span>
+      <span><%= course.lesson_count %> lesson<%= Number(course.lesson_count) === 1 ? '' : 's' %></span>
+    </div>
+    <h3><%= course.title %></h3>
+    <p><%= course.description.length > 110 ? course.description.slice(0, 110) + '...' : course.description %></p>
+    <p class="muted" style="margin-bottom:16px">Taught by <%= course.instructor_name %></p>
+    <div class="card-actions">
+      <a class="btn btn-sm btn-ghost" href="/courses/<%= course.course_id %>">View course</a>
+      <% if (enrolled && enrolled.has && enrolled.has(course.course_id)) { %>
+        <span class="btn btn-sm" style="background:var(--accent-soft);color:#0b6b53;border-color:#bfe6da">Enrolled</span>
+      <% } %>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,7 @@
+node_modules/
+.env
+db/*.sqlite
+public/uploads/videos/*
+public/uploads/thumbnails/*
+!public/uploads/videos/sample-lesson.mp4
+!public/uploads/thumbnails/course*.jpg

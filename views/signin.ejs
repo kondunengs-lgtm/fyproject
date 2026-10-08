@@ -1,0 +1,41 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="auth-wrap">
+    <div class="card">
+      <h1>Sign in</h1>
+      <p class="muted">Pick up where you stopped.</p>
+
+      <% if (errors.length) { %>
+        <div class="alert alert-error"><% errors.forEach(function (e) { %><%= e %><% }); %></div>
+      <% } %>
+
+      <form method="post" action="/signin" novalidate>
+        <input type="hidden" name="next" value="<%= next %>">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input class="input" id="email" name="email" type="email" required
+                 value="<%= values.email || '' %>" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input class="input" id="password" name="password" type="password" required autocomplete="current-password">
+        </div>
+        <button class="btn btn-block" type="submit">Sign in</button>
+      </form>
+
+      <p class="muted" style="text-align:center;margin:16px 0 0">
+        New here? <a href="/register">Create a free account</a>
+      </p>
+
+      <div class="alert alert-info" style="margin:24px 0 0">
+        <strong>Demonstration accounts</strong><br>
+        Student: student@demo.test / student123<br>
+        Instructor: instructor@demo.test / instructor123
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

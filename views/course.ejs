@@ -1,0 +1,59 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <p class="muted" style="margin-bottom:8px"><a href="/courses">Courses</a> / <%= course.category %></p>
+
+    <div class="split">
+      <%- include('partials/sidebar', { modules: modules, currentLessonId: null, sidebarLocked: !isEnrolled }) %>
+
+      <div>
+        <div class="card">
+          <span class="tag"><%= course.category %></span>
+          <h1 style="margin-top:12px"><%= course.title %></h1>
+          <p class="muted">Taught by <%= course.instructor_name %> &middot; <%= totalLessons %> lesson<%= totalLessons === 1 ? '' : 's' %></p>
+          <p><%= course.description %></p>
+
+          <% if (isEnrolled) { %>
+            <div style="display:flex;align-items:center;gap:16px;margin:24px 0">
+              <svg class="ring" viewBox="0 0 36 36" role="img" aria-label="<%= percent %> percent complete">
+                <circle class="track" cx="18" cy="18" r="15"></circle>
+                <circle class="value" cx="18" cy="18" r="15"
+                        stroke-dasharray="<%= (percent * 94.2 / 100).toFixed(1) %> 94.2"></circle>
+                <text x="18" y="21" text-anchor="middle"><%= percent %>%</text>
+              </svg>
+              <div style="flex:1">
+                <div class="progress-line">
+                  <span><%= completedLessons %> of <%= totalLessons %> lessons finished</span>
+                </div>
+                <div class="bar"><span style="width:<%= percent %>%"></span></div>
+              </div>
+            </div>
+            <a class="btn btn-block" href="/lessons/<%= resumeLessonId || (modules[0] && modules[0].lessons[0] && modules[0].lessons[0].lesson_id) %>">
+              <%= completedLessons > 0 ? 'Continue learning' : 'Start first lesson' %>
+            </a>
+          <% } else if (currentUser && currentUser.role === 'student') { %>
+            <form method="post" action="/courses/<%= course.course_id %>/enrol" style="margin-top:24px">
+              <button class="btn btn-block" type="submit">Enrol in this course &mdash; free</button>
+            </form>
+          <% } else if (!currentUser) { %>
+            <div style="margin-top:24px">
+              <a class="btn btn-block" href="/signin?next=/courses/<%= course.course_id %>">Sign in to enrol</a>
+              <p class="muted" style="text-align:center;margin-top:12px">No account? <a href="/register">Create one free</a></p>
+            </div>
+          <% } else { %>
+            <p class="muted" style="margin-top:24px">You are signed in as an instructor. Enrolment is for student accounts.</p>
+          <% } %>
+        </div>
+
+        <button class="btn btn-ghost btn-block drawer-toggle" type="button"
+                style="margin-top:16px" onclick="document.getElementById('courseMap').classList.toggle('open')">
+          Show or hide course content
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

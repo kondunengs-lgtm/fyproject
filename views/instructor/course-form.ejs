@@ -1,0 +1,52 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="auth-wrap" style="max-width:640px">
+    <div class="card">
+      <h1><%= course ? 'Edit course' : 'New course' %></h1>
+
+      <% if (errors.length) { %>
+        <div class="alert alert-error">
+          <ul style="margin:0;padding-left:18px"><% errors.forEach(function (e) { %><li><%= e %></li><% }); %></ul>
+        </div>
+      <% } %>
+
+      <form method="post"
+            action="<%= course ? '/instructor/courses/' + course.course_id + '/edit' : '/instructor/courses' %>"
+            enctype="multipart/form-data" novalidate>
+        <div class="field">
+          <label for="title">Course title</label>
+          <input class="input" id="title" name="title" required minlength="5" maxlength="150" value="<%= values.title || '' %>">
+          <p class="hint">Between 5 and 150 characters.</p>
+        </div>
+        <div class="field">
+          <label for="category">Category</label>
+          <input class="input" id="category" name="category" required value="<%= values.category || '' %>"
+                 list="categoryOptions" placeholder="Design, Programming, Data...">
+          <datalist id="categoryOptions">
+            <option>Design</option><option>Programming</option><option>Data</option><option>General</option>
+          </datalist>
+        </div>
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea class="input" id="description" name="description" required minlength="10"><%= values.description || '' %></textarea>
+        </div>
+        <% if (!course) { %>
+          <div class="field">
+            <label for="thumbnail">Cover image (optional)</label>
+            <input class="input" id="thumbnail" name="thumbnail" type="file" accept="image/jpeg,image/png">
+            <p class="hint">JPG or PNG, under 2 MB.</p>
+          </div>
+        <% } %>
+        <button class="btn btn-block" type="submit"><%= course ? 'Save changes' : 'Create course' %></button>
+      </form>
+
+      <p style="text-align:center;margin:16px 0 0">
+        <a href="/instructor/courses">Back to my courses</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

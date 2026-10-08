@@ -1,0 +1,58 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>My learning</h1>
+        <p class="muted">Welcome back, <%= currentUser.full_name.split(' ')[0] %>.</p>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="/courses">Find a course</a>
+    </div>
+
+    <% if (courses.length === 0) { %>
+      <div class="card empty">
+        <h3>You are not enrolled in anything yet</h3>
+        <p class="muted">Pick a course from the catalogue and it will appear here with your progress.</p>
+        <a class="btn" href="/courses">Browse courses</a>
+      </div>
+    <% } else { %>
+      <div class="grid">
+        <% courses.forEach(function (course) { %>
+          <article class="course-card">
+            <div class="body">
+              <div class="card-meta"><span class="tag"><%= course.category %></span></div>
+              <h3><%= course.title %></h3>
+              <p class="muted" style="margin-bottom:16px">Taught by <%= course.instructor_name %></p>
+
+              <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+                <svg class="ring" viewBox="0 0 36 36" role="img" aria-label="<%= course.percent %> percent complete">
+                  <circle class="track" cx="18" cy="18" r="15"></circle>
+                  <circle class="value" cx="18" cy="18" r="15"
+                          stroke-dasharray="<%= (course.percent * 94.2 / 100).toFixed(1) %> 94.2"></circle>
+                  <text x="18" y="21" text-anchor="middle"><%= course.percent %>%</text>
+                </svg>
+                <div style="flex:1">
+                  <div class="progress-line">
+                    <span><%= course.completed_lessons %> of <%= course.total_lessons %> lessons</span>
+                  </div>
+                  <div class="bar"><span style="width:<%= course.percent %>%"></span></div>
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <% if (course.resume_lesson_id) { %>
+                  <a class="btn btn-sm" href="/lessons/<%= course.resume_lesson_id %>">Continue</a>
+                <% } %>
+                <a class="btn btn-sm btn-ghost" href="/courses/<%= course.course_id %>">Course page</a>
+              </div>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

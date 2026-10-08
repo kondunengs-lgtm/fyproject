@@ -1,0 +1,52 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>My courses</h1>
+        <p class="muted">Create a course, add modules, then add lessons to each module.</p>
+      </div>
+      <a class="btn" href="/instructor/courses/new">New course</a>
+    </div>
+
+    <% if (courses.length === 0) { %>
+      <div class="card empty">
+        <h3>No courses yet</h3>
+        <p class="muted">Your first course takes about a minute to set up.</p>
+        <a class="btn" href="/instructor/courses/new">Create your first course</a>
+      </div>
+    <% } else { %>
+      <div class="panel table-wrap">
+        <table class="data">
+          <thead>
+            <tr><th>Course</th><th>Modules</th><th>Lessons</th><th>Students</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% courses.forEach(function (c) { %>
+              <tr>
+                <td>
+                  <strong><%= c.title %></strong><br>
+                  <span class="muted"><%= c.category %></span>
+                </td>
+                <td><%= c.module_count %></td>
+                <td><%= c.lesson_count %></td>
+                <td><%= c.student_count %></td>
+                <td style="white-space:nowrap">
+                  <a class="btn btn-sm btn-ghost" href="/instructor/courses/<%= c.course_id %>">Manage</a>
+                  <form method="post" action="/instructor/courses/<%= c.course_id %>/delete" style="display:inline"
+                        onsubmit="return confirm('Delete this course and everything in it?')">
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
